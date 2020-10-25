@@ -1,0 +1,10 @@
+D:\oop\final\excel\bin\Debug\excel.exe.config
+D:\oop\final\excel\bin\Debug\excel.exe
+D:\oop\final\excel\bin\Debug\excel.pdb
+D:\oop\final\excel\obj\Debug\excel.Properties.Resources.resources
+D:\oop\final\excel\obj\Debug\LR1.csproj.GenerateResource.cache
+D:\oop\final\excel\obj\Debug\LR1.csproj.CoreCompileInputs.cache
+D:\oop\final\excel\obj\Debug\excel.exe
+D:\oop\final\excel\obj\Debug\excel.pdb
+D:\oop\final\excel\obj\Debug\LR1.csprojAssemblyReference.cache
+D:\oop\final\excel\obj\Debug\excel.TableLR1.resources
