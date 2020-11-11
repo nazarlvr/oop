@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Notebooks>
+	<Notebook
+		Company = "Asus"
+		Model = "Vivobook"
+		Price = "10000"
+		Rating = "7.3"
+		Quality = "Новий"
+		Size ="15.6">
+	</Notebook>
+	<Notebook
+		Company = "Dell"
+		Model = "Inspiron"
+		Price = "15000"
+		Rating = "9.3"
+		Quality = "Б/У"
+		Size ="15.6">
+	</Notebook>
+	<Notebook
+		Company = "Lenovo"
+		Model = "ThinkPad"
+		Price = "6000"
+		Rating = "5.1"
+		Quality = "Б/У"
+		Size ="11">
+	</Notebook>
+	<Notebook
+		Company = "Apple"
+		Model = "MacBook"
+		Price = "95000"
+		Rating = "10"
+		Quality = "Новий"
+		Size ="16">
+	</Notebook>
+</Notebooks>
