@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Notebooks>
+  <Notebook Company="Apple" Model="MacBook" Price="95000" Rating="10" Quality="Новий" Size="17" />
+</Notebooks>

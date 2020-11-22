@@ -58,6 +58,7 @@
             this.checkBoxCompany.TabIndex = 0;
             this.checkBoxCompany.Text = "Компанія";
             this.checkBoxCompany.UseVisualStyleBackColor = true;
+            this.checkBoxCompany.CheckedChanged += new System.EventHandler(this.checkBoxCompany_CheckedChanged);
             // 
             // comboBoxCompany
             // 
@@ -217,6 +218,7 @@
             this.transform.TabIndex = 16;
             this.transform.Text = "Трансформація";
             this.transform.UseVisualStyleBackColor = true;
+            this.transform.Click += new System.EventHandler(this.transform_Click);
             // 
             // clear
             // 

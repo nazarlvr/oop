@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Xsl;
 
 namespace LR2
 {
@@ -25,10 +26,11 @@ namespace LR2
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(@"C:\Users\user\source\repos\LR2\Gadgets.xml");
-            XmlElement xroot = doc.DocumentElement;
-            XmlNodeList chnodes = xroot.SelectNodes("Gadget");
 
-            for (int i = 0; i < chnodes.Count; ++i)
+            XmlElement xroot = doc.DocumentElement;
+            XmlNodeList chnodes = xroot.SelectNodes("Notebook");
+
+            for (int i = 0; i < chnodes.Count; i++)
             {
                 XmlNode n = chnodes.Item(i);
                 AddNewItem(n);
@@ -55,34 +57,32 @@ namespace LR2
         private void AddNewItem(XmlNode nod)
         {
 
-            if (!comboBoxCompany.Items.Contains(nod.SelectSingleNode(@"Company").Value))
+            if (!comboBoxCompany.Items.Contains(nod.SelectSingleNode("@Company").Value))
             {
-                comboBoxCompany.Items.Add(nod.SelectSingleNode(@"Company").Value);
+                comboBoxCompany.Items.Add(nod.SelectSingleNode("@Company").Value);
             }
-            if (!comboBoxModel.Items.Contains(nod.SelectSingleNode(@"Model").Value))
+            if (!comboBoxModel.Items.Contains(nod.SelectSingleNode("@Model").Value))
             {
-                comboBoxModel.Items.Add(nod.SelectSingleNode(@"Model").Value);
+                comboBoxModel.Items.Add(nod.SelectSingleNode("@Model").Value);
             }
-            if (!comboBoxQuality.Items.Contains(nod.SelectSingleNode(@"Price").Value))
+            if (!comboBoxPrice.Items.Contains(nod.SelectSingleNode("@Price").Value))
             {
-                comboBoxQuality.Items.Add(nod.SelectSingleNode(@"Price").Value);
+                comboBoxPrice.Items.Add(nod.SelectSingleNode("@Price").Value);
             }
-            if (!comboBoxQuality.Items.Contains(nod.SelectSingleNode(@"Rating").Value))
+            if (!comboBoxRating.Items.Contains(nod.SelectSingleNode("@Rating").Value))
             {
-                comboBoxQuality.Items.Add(nod.SelectSingleNode(@"Rating").Value);
+                comboBoxRating.Items.Add(nod.SelectSingleNode("@Rating").Value);
             }
-
-
         }
 
         class Notebooks 
         {
-            public string Company;
-            public string Model;
-            public string Price;
-            public string Size;
-            public string Rating;
-            public string Quality;
+            public string Company = "";
+            public string Model = "";
+            public string Price = "";
+            public string Size = "";
+            public string Rating = "";
+            public string Quality = "";
         }
 
         interface XMLStrategy
@@ -289,6 +289,21 @@ namespace LR2
         private void button3_Click(object sender, EventArgs e)
         {
             rtb.Text = "";
+            checkBoxCompany.Checked = false;
+            checkBoxModel.Checked = false;
+            checkBoxPrice.Checked = false;
+            checkBoxQuality.Checked = false;
+            checkBoxRating.Checked = false;
+            checkBoxSize.Checked = false;
+            radioButtondom.Checked = false;
+            radioButtonLtx.Checked = false;
+            radioButtonsax.Checked = false;
+            comboBoxCompany.SelectedIndex = -1;
+            comboBoxModel.SelectedIndex = -1;
+            comboBoxPrice.SelectedIndex = -1;
+            comboBoxQuality.SelectedIndex = -1;
+            comboBoxRating.SelectedIndex = -1;
+            comboBoxSize.SelectedIndex = -1;
         }
 
         private void checkBoxSize_CheckedChanged(object sender, EventArgs e)
@@ -307,17 +322,96 @@ namespace LR2
 
             if (checkBoxCompany.Checked) { nb.Company = comboBoxCompany.SelectedItem.ToString(); }
             if (checkBoxModel.Checked) { nb.Model = comboBoxModel.SelectedItem.ToString(); }
-            if (checkBoxPrice.Checked) { nb.Company = comboBoxPrice.SelectedItem.ToString(); }
-            if (checkBoxRating.Checked) { nb.Company = comboBoxRating.SelectedItem.ToString(); }
-            if (checkBoxQuality.Checked) { nb.Company = comboBoxQuality.SelectedItem.ToString(); }
-            if (checkBoxSize.Checked) { nb.Company = comboBoxSize.SelectedItem.ToString(); }
+            if (checkBoxPrice.Checked) { nb.Price = comboBoxPrice.SelectedItem.ToString(); }
+            if (checkBoxRating.Checked) { nb.Rating = comboBoxRating.SelectedItem.ToString(); }
+            if (checkBoxQuality.Checked) { nb.Quality = comboBoxQuality.SelectedItem.ToString(); }
+            if (checkBoxSize.Checked) { nb.Size = comboBoxSize.SelectedItem.ToString(); }
 
             XMLStrategy an = new XmlDOMStrategy();
 
             if (radioButtondom.Checked) an = new XmlDOMStrategy();
             if (radioButtonsax.Checked) an = new XmlSAXStrategy();
             if (radioButtonLtx.Checked) an = new XmlLTXStrategy();
-            
+
+            List<Notebooks> res = an.Search(nb);
+            CreateXMLTransform(res);
+            foreach (Notebooks ntb in res)
+            {
+                rtb.Text += "Компанія - " + ntb.Company + "\n";
+                rtb.Text += "Модель - " + ntb.Model + "\n";
+                rtb.Text += "Ціна - " + ntb.Price + "\n";
+                rtb.Text += "Рейтинг - " + ntb.Rating + "\n";
+                rtb.Text += "Стан - " + ntb.Quality + "\n";
+                rtb.Text += "Розмір екрана - " + ntb.Size + "\n";
+                rtb.Text +=  "\n\n\n";
+            }
+        }
+
+        private void transform_Click(object sender, EventArgs e)
+        {
+            transform1();
+        }
+
+        private void transform1()
+        {
+            XslCompiledTransform xct = new XslCompiledTransform();
+            xct.Load(@"C:\Users\user\source\repos\LR2\xsldoc.xsl");
+            string link1 = @"C:\Users\user\source\repos\LR2\helpxml.xml";
+            string link2 = @"C:\Users\user\source\repos\LR2\helpxml.html";
+            xct.Transform(link1, link2);
+        }
+        private void CreateXMLTransform(List<Notebooks> list)
+        {
+            var xmlDoc = new XmlDocument();
+            XmlElement el;
+            int childCounter;
+
+            xmlDoc.AppendChild(xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null));
+
+            el = xmlDoc.CreateElement("Notebooks");
+            xmlDoc.AppendChild(el);
+
+            int size = list.Count();
+
+            for (childCounter = 0; childCounter < size; childCounter++)
+            {
+                XmlElement childelmt;
+                XmlAttribute childattr;
+
+                childelmt = xmlDoc.CreateElement("Notebook");
+
+                childattr = xmlDoc.CreateAttribute("Company");
+                childattr.Value = list[childCounter].Company;
+                childelmt.Attributes.Append(childattr);
+
+                childattr = xmlDoc.CreateAttribute("Model");
+                childattr.Value = list[childCounter].Model;
+                childelmt.Attributes.Append(childattr);
+
+                childattr = xmlDoc.CreateAttribute("Price");
+                childattr.Value = list[childCounter].Price;
+                childelmt.Attributes.Append(childattr);
+
+                childattr = xmlDoc.CreateAttribute("Rating");
+                childattr.Value = list[childCounter].Rating;
+                childelmt.Attributes.Append(childattr);
+
+                childattr = xmlDoc.CreateAttribute("Quality");
+                childattr.Value = list[childCounter].Quality;
+                childelmt.Attributes.Append(childattr);
+
+                childattr = xmlDoc.CreateAttribute("Size");
+                childattr.Value = list[childCounter].Size;
+                childelmt.Attributes.Append(childattr);
+
+                el.AppendChild(childelmt);
+            }
+
+            xmlDoc.Save(@"C:\Users\user\source\repos\LR2\helpxml.xml");
+        }
+
+        private void checkBoxCompany_CheckedChanged(object sender, EventArgs e)
+        {
 
         }
     }
