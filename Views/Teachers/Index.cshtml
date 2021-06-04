@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DbSchool.Teacher>
+
+@{
+    ViewData["Title"] = "Вчителі за категорією";
+}
+
+<h1>Вчителі категорії @ViewBag.CategoryName </h1>
+
+<p>
+    @Html.ActionLink("Додати нового вчителя", "Create", new { categoryId = @ViewBag.CategoryId})
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TeacherFullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MobileNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Class.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeacherFullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MobileNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Class.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TeacherId">Редаг.</a> |
+                <a asp-action="Details" asp-route-id="@item.TeacherId">Деталі</a> |
+                <a asp-action="Delete" asp-route-id="@item.TeacherId">Видалити</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

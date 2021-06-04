@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DbSchool.School>
+
+@{
+    ViewData["Title"] = "Школи за типом";
+}
+
+<h1>Школи типу @ViewBag.SchoolTypeName </h1>
+
+<p>
+    @Html.ActionLink("Додати нову школу", "Create", new { schoolTypeId = @ViewBag.SchoolTypeId}) 
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Info)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolType.SchoolTypeName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchoolNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Info)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SchoolType.SchoolTypeName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SchoolId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SchoolId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SchoolId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@model DbSchool.SchoolType
+
+@{
+    ViewData["Title"] = "Видалити";
+}
+
+<h1>Видалення</h1>
+
+<h3>Ви дійсно хочете цього?</h3>
+<div>
+    <h4>Тип школи</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SchoolTypeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SchoolTypeName)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="SchoolTypeId" />
+        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        <a asp-action="Index">Повернутись до списку</a>
+    </form>
+</div>

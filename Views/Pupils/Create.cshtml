@@ -1,0 +1,41 @@
+﻿@model DbSchool.Pupil
+
+@{
+    ViewData["Title"] = "Створення";
+}
+
+<h1>Додавання учня у клас @ViewBag.Name </h1>
+
+<h4>Учень</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PupilFullName" class="control-label"></label>
+                <input asp-for="PupilFullName" class="form-control" />
+                <span asp-validation-for="PupilFullName" class="text-danger"></span>
+            </div>
+
+            <input type ="hidden" value="@ViewBag.ClassId" name="ClassId" />
+            
+            <div class="form-group">
+                <label asp-for="MobileNumber" class="control-label"></label>
+                <input asp-for="MobileNumber" class="form-control" />
+                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Повернутися до списку</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
